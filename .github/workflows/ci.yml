@@ -46,3 +46,49 @@ jobs:
         with:
           name: jacoco-report-bai05
           path: Bai05/target/site/jacoco/
+
+      # Tự động review code bằng Checkstyle (Bai07)
+      - name: Automated Code Review (Checkstyle)
+        uses: dbelyaev/action-checkstyle@v1
+        if: github.event_name == 'pull_request'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          workdir: Bai07
+
+      # Bài 08: Đóng gói và lưu trữ file thực thi
+      - name: Build and Package Bai08
+        run: mvn clean package
+        working-directory: Bai08
+
+      - name: Upload Bai08 JAR Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shipping-calculator-jar
+          path: Bai08/target/*.jar
+
+      # Thực thi Bài 09
+      - name: Build and Test Bai09
+        run: mvn clean test
+        working-directory: Bai09
+
+      # Lưu log của Bài 09 để thầy cô check
+      - name: Upload Bai09 Logs
+        uses: actions/upload-artifact@v4
+        if: always() # Luôn upload kể cả khi test fail để xem log lỗi
+        with:
+          name: app-logs-bai09
+          path: Bai09/logs/app.log
+
+      # TRỌNG TÂM BÀI 10: Chạy build và test cho module Bài 10
+      - name: Build and Test Bai10
+        run: mvn clean package
+        working-directory: Bai10
+
+      # Bước 4: Lưu trữ sản phẩm Bài 10 (Artifact)
+      - name: Upload Bai10 Artifact
+        uses: actions/upload-artifact@v4
+        if: always() # Luôn chạy để lấy file kể cả khi build lỗi
+        with:
+          name: shipping-calculator-bai10
+          path: Bai10/target/*.jar
