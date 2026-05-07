@@ -35,3 +35,14 @@ jobs:
         with:
           name: math-utils-artifact
           path: Bai03/target/*.jar
+
+
+      - name: Verify Coverage with JaCoCo (Bai05)
+        run: mvn clean verify
+        working-directory: Bai05
+
+      - name: Upload JaCoCo HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report-bai05
+          path: Bai05/target/site/jacoco/
