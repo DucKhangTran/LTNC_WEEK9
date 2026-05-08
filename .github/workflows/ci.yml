@@ -40,7 +40,7 @@ jobs:
       - name: Verify Coverage with JaCoCo (Bai05)
         run: mvn clean verify
         working-directory: Bai05
-
+      # fix jacoco
       - name: Upload JaCoCo HTML Report
         uses: actions/upload-artifact@v4
         with:
